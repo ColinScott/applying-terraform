@@ -6,4 +6,4 @@ Demonstrates a number of basic Terraform constructs. Creates nothing actually us
 Requirements
 ------------
 
-Requires the queue ""
+Requires the queue "basic-test-third-sydney" to exist
