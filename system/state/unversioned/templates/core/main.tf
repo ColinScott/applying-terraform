@@ -2,8 +2,13 @@ provider "aws" {
   region = "${var.region}"
 }
 
-resource "aws_s3_bucket" {
-  name = "abstractcode-test-terraform-${var.dc_name}"
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "abstractcode-test-terraform-${var.dc_name}"
+  acl = "private"
+
+  tags {
+    Name = "Terraform State"
+  }
 }
 
 resource "aws_dynamodb_table" "terraform_statelock" {
@@ -15,5 +20,9 @@ resource "aws_dynamodb_table" "terraform_statelock" {
   attribute {
     name = "LockID"
     type = "S"
+  }
+
+  tags {
+    Name = "Terraform State Locking"
   }
 }
