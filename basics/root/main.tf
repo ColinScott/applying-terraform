@@ -9,7 +9,7 @@ resource "aws_sqs_queue" "first_test" {
 
 resource "aws_sqs_queue" "second_test" {
   name = "basic-test-second-${var.dc_name}"
-  message_retention_seconds = 30
+  message_retention_seconds = 60
 }
 
 module "monitoring" {
@@ -37,7 +37,6 @@ module "second_queue_alarms" {
 data "aws_sqs_queue" "third_test" {
   name = "basic-test-third-${var.dc_name}"
 }
-
 
 module "third_queue_alarms" {
   source = "../queue_alarms"
