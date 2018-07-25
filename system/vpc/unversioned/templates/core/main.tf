@@ -22,3 +22,11 @@ module "acls" {
   restricted_cidr = "${data.terraform_remote_state.vpc.restricted_cidr}"
   restricted_subnets = ["${data.terraform_remote_state.vpc.restricted_subnets}"]
 }
+
+module "internet_access" {
+  source = "../../../modules/internet_access"
+
+  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+
+  public_subnets = ["${data.terraform_remote_state.vpc.public_subnets}"]
+}
