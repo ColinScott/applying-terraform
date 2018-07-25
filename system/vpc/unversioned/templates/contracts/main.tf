@@ -3,13 +3,14 @@ provider "aws" {
 }
 
 locals {
-  public_cidr = "${cidrsubnet(var.cidr, 2, 1)}"
-  private_cidr = "${cidrsubnet(var.cidr, 2, 2)}"
-  restricted_cidr = "${cidrsubnet(var.cidr, 2, 3)}"
+  cidr = "${var.base_ip}/16"
+  public_cidr = "${cidrsubnet(local.cidr, 9, 0)}"
+  private_cidr = "${cidrsubnet(local.cidr, 3, 1)}"
+  restricted_cidr = "${cidrsubnet(local.cidr, 3, 2)}"
 }
 
 resource "aws_vpc" "test" {
-  cidr_block = "${var.cidr}"
+  cidr_block = "${local.cidr}"
 
   tags {
     Name = "test"
