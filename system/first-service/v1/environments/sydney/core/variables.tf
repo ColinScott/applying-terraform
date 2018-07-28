@@ -1,0 +1,1 @@
+../../../templates/core/variables.tf
