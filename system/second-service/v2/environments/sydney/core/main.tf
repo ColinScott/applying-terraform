@@ -1,0 +1,1 @@
+../../../templates/core/main.tf

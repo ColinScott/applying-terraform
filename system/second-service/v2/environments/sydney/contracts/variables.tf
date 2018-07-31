@@ -1,0 +1,1 @@
+../../../templates/contracts/variables.tf

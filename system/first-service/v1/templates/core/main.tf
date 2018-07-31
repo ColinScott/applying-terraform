@@ -31,6 +31,15 @@ data "terraform_remote_state" "contacts_v1" {
   }
 }
 
+data "terraform_remote_state" "second_service_contacts_v2" {
+  backend = "s3"
+  config {
+    bucket = "abstractcode-test-terraform-${var.dc_name}"
+    key    = "services/second/v2/contracts/terraform.tfstate"
+    region = "${var.region}"
+  }
+}
+
 data "aws_ami" "amazon_linux" {
   most_recent = true
 
@@ -50,4 +59,22 @@ resource "aws_instance" "service" {
 
   subnet_id = "${data.terraform_remote_state.vpc.private_subnets[0]}"
   vpc_security_group_ids = ["${data.terraform_remote_state.contacts_v1.security_group_id}"]
+}
+
+resource "aws_security_group_rule" "second_service_ingress" {
+  protocol = "tcp"
+  security_group_id = "${data.terraform_remote_state.contacts_v1.security_group_id}"
+  from_port = 8888
+  to_port = 8888
+  type = "ingress"
+  source_security_group_id = "${data.terraform_remote_state.second_service_contacts_v2.security_group_id}"
+}
+
+resource "aws_security_group_rule" "second_service_egress" {
+  protocol = "tcp"
+  security_group_id = "${data.terraform_remote_state.second_service_contacts_v2.security_group_id}"
+  from_port = 8888
+  to_port = 8888
+  type = "egress"
+  source_security_group_id = "${data.terraform_remote_state.contacts_v1.security_group_id}"
 }
