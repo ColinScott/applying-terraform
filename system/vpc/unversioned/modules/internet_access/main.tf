@@ -7,7 +7,7 @@ resource "aws_internet_gateway" "gateway" {
 }
 
 resource "aws_eip" "nat" {
-  count = "${length(var.public_subnets)}"
+  count = "${var.create_nat == "true" ? length(var.public_subnets) : 0}"
 
   vpc = true
 
@@ -15,7 +15,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "nat" {
-  count = "${length(var.public_subnets)}"
+  count = "${var.create_nat == "true" ? length(var.public_subnets) : 0}"
 
   allocation_id = "${aws_eip.nat.*.id[count.index]}"
   subnet_id     = "${var.public_subnets[count.index]}"

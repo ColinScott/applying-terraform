@@ -47,4 +47,7 @@ resource "aws_instance" "service" {
   instance_type = "${var.instance_type}"
 
   key_name = "first-service-${var.dc_name}-v1"
+
+  subnet_id = "${data.terraform_remote_state.vpc.private_subnets[0]}"
+  vpc_security_group_ids = ["${data.terraform_remote_state.contacts_v1.security_group_id}"]
 }

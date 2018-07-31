@@ -29,4 +29,6 @@ module "internet_access" {
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
   public_subnets = ["${data.terraform_remote_state.vpc.public_subnets}"]
+
+  create_nat = "${var.create_nat}"
 }
