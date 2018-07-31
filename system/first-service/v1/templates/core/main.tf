@@ -1,5 +1,7 @@
 provider "aws" {
   region = "${var.region}"
+
+  version = ">= 1.29"
 }
 
 data "terraform_remote_state" "vpc" {
